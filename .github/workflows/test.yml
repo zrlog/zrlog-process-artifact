@@ -1,0 +1,22 @@
+name: Test artifact processing client
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check Bash syntax
+        run: bash -n scripts/process-artifact.sh
+      - name: Test the real client against a local HTTP fixture
+        run: python3 -m unittest discover -s tests -v
