@@ -1,5 +1,8 @@
 # ZrLog Process Artifact
 
+[GitHub Marketplace](https://github.com/marketplace/actions/zrlog-process-artifact) ·
+[Releases](https://github.com/zrlog/zrlog-process-artifact/releases)
+
 GitHub Action and Bash client for processing Linux native binaries through an authenticated
 `zrlog-artifact-service` endpoint, with SHA-256 and size verification.
 

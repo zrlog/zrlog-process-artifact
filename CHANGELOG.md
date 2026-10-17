@@ -2,6 +2,7 @@
 
 ## v1.0.0 — 2026-10-17
 
+- 已发布至 [GitHub Marketplace](https://github.com/marketplace/actions/zrlog-process-artifact)。
 - 首个独立版本，提供根目录 Composite Action 与共用 Bash 客户端。
 - 支持上传 Native 制品、轮询处理任务、校验 SHA-256 和大小后原位替换，并确认清理临时结果。
 - 保留 HTTP 重试的响应隔离、失败时原文件保护，以及清理失败不阻断已验证结果的行为。
