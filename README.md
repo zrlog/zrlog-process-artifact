@@ -1,5 +1,8 @@
 # ZrLog Process Artifact
 
+GitHub Action and Bash client for processing Linux native binaries through an authenticated
+`zrlog-artifact-service` endpoint, with SHA-256 and size verification.
+
 供 ZrLog 主程序和插件构建复用的 Native 制品处理客户端，提供 GitHub Composite Action
 和 Bash 命令行入口。客户端将原始可执行文件上传到 `zrlog-artifact-service`，轮询处理任务，
 下载结果并核对 SHA-256 和文件大小后，原位替换输入文件。
@@ -12,12 +15,12 @@
 Linux runner 需要 Bash、curl（支持 `--fail-with-body`）、jq、sha256sum 和常规 GNU 工具。
 处理前完成 Native 编译，处理后再计算最终制品摘要、组包或上传。
 
-消费者固定到经验证的完整提交 SHA，替换下面的 `<full-commit-sha>`：
+快捷接入使用 `@v1`，跟随兼容的 1.x 稳定版本：
 
 ```yaml
 - name: Process Linux native artifact
   if: runner.os == 'Linux'
-  uses: zrlog/zrlog-process-artifact@<full-commit-sha>
+  uses: zrlog/zrlog-process-artifact@v1
   with:
     artifact-file: build/my-plugin.bin
     artifact-name: my-plugin
@@ -26,6 +29,10 @@ Linux runner 需要 Bash、curl（支持 `--fail-with-body`）、jq、sha256sum 
     service-url: ${{ vars.ARTIFACT_SERVICE_URL }}
     service-token: ${{ secrets.ARTIFACT_SERVICE_TOKEN }}
 ```
+
+也可以使用 `@v1.0.0` 固定版本。内部正式构建继续使用经验证的完整提交 SHA，
+避免移动标签改变构建输入；在检出本仓库后，用 `git rev-parse 'v1.0.0^{commit}'`
+取得该版本的 40 位提交 SHA，再将 `@v1` 替换为 `@<full-commit-sha>`。
 
 | 输入 | 必填 | 说明 |
 | --- | --- | --- |
@@ -62,6 +69,16 @@ bash /tmp/zrlog-process-artifact/scripts/process-artifact.sh \
 
 可选环境变量为 `ARTIFACT_POLL_INTERVAL_SECONDS`、`ARTIFACT_PROCESS_TIMEOUT_SECONDS`。
 命令行参数与 Action 的前四个输入对应，不依赖消费者的 `build.properties`。
+
+## 版本约定
+
+- `v1.0.0` 等完整版本标签固定对应提交，发布后不移动。
+- `v1` 指向最新经过验证的兼容 1.x 稳定版本，只在正式版本发布时更新。
+- 改变必填输入、结果校验或失败处理契约时，按兼容性影响选择新的主版本。
+- 每次发布前等待目标提交的客户端 CI 通过，再创建版本标签和 Release，并同步主版本标签。
+
+版本变化见 [CHANGELOG.md](CHANGELOG.md)，已发布版本见
+[GitHub Releases](https://github.com/zrlog/zrlog-process-artifact/releases)。
 
 ## 校验与故障处理
 

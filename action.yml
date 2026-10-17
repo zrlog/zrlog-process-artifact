@@ -1,5 +1,9 @@
-name: Process native artifact
-description: Process a native artifact through zrlog-artifact-service and replace it with the verified result.
+name: ZrLog Process Artifact
+author: ZrLog
+description: Process Linux native artifacts through zrlog-artifact-service with SHA-256 and size verification.
+branding:
+  icon: package
+  color: blue
 
 inputs:
   artifact-file:
