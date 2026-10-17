@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.1 — 2026-10-17
+
+- Action 和命令行默认处理等待时限从 `900` 秒（15 分钟）延长至 `14400` 秒（4 小时），覆盖上传后的排队和处理。
+- 保留输入与环境变量覆盖方式；说明调用方 job 总时限需要为编译、传输和组包预留时间。
+
 ## v1.0.0 — 2026-10-17
 
 - 已发布至 [GitHub Marketplace](https://github.com/marketplace/actions/zrlog-process-artifact)。

@@ -33,8 +33,8 @@ Linux runner 需要 Bash、curl（支持 `--fail-with-body`）、jq、sha256sum 
     service-token: ${{ secrets.ARTIFACT_SERVICE_TOKEN }}
 ```
 
-也可以使用 `@v1.0.0` 固定版本。内部正式构建继续使用经验证的完整提交 SHA，
-避免移动标签改变构建输入；在检出本仓库后，用 `git rev-parse 'v1.0.0^{commit}'`
+也可以使用 `@v1.0.1` 固定版本。内部正式构建继续使用经验证的完整提交 SHA，
+避免移动标签改变构建输入；在检出本仓库后，用 `git rev-parse 'v1.0.1^{commit}'`
 取得该版本的 40 位提交 SHA，再将 `@v1` 替换为 `@<full-commit-sha>`。
 
 | 输入 | 必填 | 说明 |
@@ -46,10 +46,14 @@ Linux runner 需要 Bash、curl（支持 `--fail-with-body`）、jq、sha256sum 
 | `service-url` | 是 | 服务完整基址，包含部署的上下文路径。 |
 | `service-token` | 是 | 服务 Bearer token，由消费者的 Actions Secret 提供。 |
 | `poll-interval-seconds` | 否 | 轮询间隔，默认 `5` 秒。 |
-| `process-timeout-seconds` | 否 | 上传完成后的轮询时限，默认 `900` 秒；不包含上传、下载及 HTTP 重试耗时。 |
+| `process-timeout-seconds` | 否 | 上传完成后的轮询时限，包含排队和处理，默认 `14400` 秒（4 小时）；不包含上传、下载耗时。 |
 
 名称、版本和架构只接受字母、数字、点、下划线与连字符。间隔和时限必须为正整数。
 Action 没有额外输出；后续步骤继续使用 `artifact-file` 指定的文件。
+
+工作流的 job 总时限需要覆盖编译、上传、等待处理、下载和后续组包。
+建议将调用方 job 的 `timeout-minutes` 设为 `360`（6 小时），为默认 4 小时等待留出其他步骤的时间；
+需要不同等待时限时，通过 `process-timeout-seconds` 或命令行环境变量覆盖。
 
 服务可配置为 `https://webdav.zrlog.com/artifact`。服务使用
 `ARTIFACT_CONTEXT_PATH=/artifact` 时，基址必须包含 `/artifact`；客户端在其后追加

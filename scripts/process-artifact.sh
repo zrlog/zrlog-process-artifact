@@ -35,7 +35,7 @@ done
 
 serviceUrl=${ARTIFACT_SERVICE_URL%/}
 pollInterval=${ARTIFACT_POLL_INTERVAL_SECONDS:-5}
-processTimeout=${ARTIFACT_PROCESS_TIMEOUT_SECONDS:-900}
+processTimeout=${ARTIFACT_PROCESS_TIMEOUT_SECONDS:-14400}
 
 if [[ ! "${pollInterval}" =~ ^[1-9][0-9]*$ || ! "${processTimeout}" =~ ^[1-9][0-9]*$ ]]; then
   echo "Artifact poll interval and timeout must be positive integers" >&2

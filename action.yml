@@ -29,9 +29,9 @@ inputs:
     required: false
     default: "5"
   process-timeout-seconds:
-    description: Maximum number of seconds to wait for processing.
+    description: Maximum seconds to wait for queued and running processing after upload.
     required: false
-    default: "900"
+    default: "14400"
 
 runs:
   using: composite
